@@ -1,0 +1,25 @@
+server:
+  port: ${port:9091}
+
+logging:
+  level:
+    com:
+      iot: debug
+  file: ErrLog.log
+
+
+spring:
+  datasource:
+#    url: jdbc:mysql://localhost:3306/mqtt
+#    username: root
+#    password: zUC8ytsEEh7gCj
+    url: jdbc:mysql://127.0.0.1:3306/mqtt
+    username: mqtt
+    password: xjTSRM2ZJG3TP7dA
+  application:
+    name: mqtt-devices  # Eureka服务在保存元素据时的第一层key值
+
+mybatis:
+  type-aliases-package: com.iot.pojo
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

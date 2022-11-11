@@ -1,0 +1,220 @@
+.darkness .loader-7::after,.darkness .loader-7::before,
+.darkness .loader-7::after,.darkness .loader-7::before,
+.darkness .loader-7,.darkness .loader--7
+{
+	border-color: white !important;
+}
+.darkness .content>div{
+	background-color: rgba(36,113,197,0.12);
+	color: white;
+	
+}
+.mark{
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background-color: rgba(26, 26, 26, 0.9);
+	display: none;
+}
+.darkness .mark{
+	display: block;
+}
+.right .prompt{
+	border-color: #000000;
+}
+
+
+.theme-title{
+	display: inline-block;
+	position: absolute;
+	left: 0px;
+	top: -25px;
+}
+.theme{
+    position: absolute;
+    left: 36px;
+    bottom: 20px;
+    border-radius: 3px;
+    width: 100px;
+    height: 30px;
+	
+}
+.theme div{
+	
+}
+.theme .left{
+	position: absolute;
+	top: 0;
+	height: 26px;
+	width: 45px;
+	background-color: white;
+	left: 0px;
+	border: #F0AD4E solid 4px;
+}
+.theme .right{
+	position: absolute;
+	background-color: black;
+	
+	top: 3px;
+	height: 19px;
+	width: 43px;
+	right: 2px;
+	border: none;
+}
+.darkness .theme .left{
+	top: 3px;
+	height: 19px;
+	width: 43px;
+	left: 2px;
+	border: none;
+}
+.darkness .theme .right{
+	border: #F0AD4E solid 4px;
+	top: 0px;
+	right: 0px;
+	height: 26px;
+	width: 45px;
+}
+
+
+
+
+
+.head{
+	height: 3.4375rem;
+	width: 100%;
+	/* border-bottom: 1px #E5E5E5 solid; */
+}
+.lnr-user{
+	position: absolute;
+	right: 15px;
+	top: 15px;
+}
+.title{
+	position: absolute;
+	height: 3.4375rem;
+	left: 50%;
+	transform: translateX(-50%);
+	text-align: center;
+	line-height: 3.4375rem;
+	font-size: large;
+}
+
+
+
+.content{
+	height: 600px;
+	/* border-top: 1px #E5E5E5 solid;
+	border-bottom: 1px #E5E5E5 solid; */
+	color: #606367;
+}
+.content>div{
+	background-color: white;
+	position: relative;
+	margin-top: 20px;
+	margin-left: 5%;
+	height: 160px;
+	width: 90%;
+	border-radius: 8px;
+	/* border: 1px #E5E5E5 solid; */	
+}
+.door{
+}
+.mouse-board{
+	
+}
+.device-light{
+}
+.con-title{
+	position: absolute;
+	left: 15px;
+	top: 10px;
+}
+.state{
+	position: absolute;
+	right: 15px;
+	top: 0;
+	width: 70px;
+	height: 40px;
+}
+.state .dot{
+	position: absolute;
+	left: 0;
+	top: 15px;
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background-color: #34C034;
+}
+.state .text{
+	position: absolute;
+	left: 20px;
+	top: 10px;
+	width: 60px;
+	text-align: left;
+	line-height: 20px;
+	font-size: small;
+}
+.state1 .text2, .state1 .text3, .state1 .loader-7{
+	display: none;
+}
+.state2 .text1, .state2 .text3, .state2 .dot{
+	display: none;
+}
+.state2 .loader-7{
+	margin-top: 6px;
+	margin-left: -9px;
+}
+.state3 .text1, .state3 .text2, .state3 .loader-7{
+	display: none;
+}
+.state3 .dot{
+	background-color: #c30000;
+}
+
+
+.con{
+	position: absolute;
+	bottom: 0;
+	height: 120px;
+	width: 100%;
+}
+.con .left{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 50%;
+	height: 100%;
+}
+.con .right{
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 50%;
+	height: 100%;
+}
+
+.right .prompt{
+	position: absolute;
+	width: 90%;
+	top: 33px;
+	left: 5px;
+	height: 15px;
+	/* transform: translateX(-50%); */
+	/* border-bottom: #EEEEEE 1px solid; */
+	text-align: left;
+	line-height: 15px;
+	padding-left: 6px;
+	border-left: 4px solid #EEEEEE;
+}
+.right .mui-switch {
+	position: absolute;
+	bottom: 30px;
+	left: 4px;
+}
+
+.hidden {
+	display: none !important;
+}

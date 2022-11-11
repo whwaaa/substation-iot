@@ -1,0 +1,22 @@
+server:
+  port: ${port:10086}
+
+spring:
+  application:
+    name: eureka-server
+
+eureka:
+  client:
+    # eureka 服务地址, 如果是集群的话, 需要指定其他集群eureka地址
+    service-url:
+      defaultZone: ${defaultZone:http://localhost:10086/eureka}
+    # 不注册自己到Eureka服务中
+    #register-with-eureka: false
+    # 不拉取其他服务
+    #fetch-registry: false
+#      defaultZone: http://localhost:10087/eureka,http://localhost:10088/eureka
+  server:
+    # 服务失效时间
+    eviction-interval-timer-in-ms: 10000
+    # 关闭自我保护
+    enable-self-preservation: true

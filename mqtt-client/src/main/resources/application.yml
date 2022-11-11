@@ -1,0 +1,47 @@
+server:
+  port: ${port:80}
+
+spring:
+  datasource:
+#    url: jdbc:mysql://localhost:3306/mqtt
+#    username: root
+#    password: zUC8ytsEEh7gCj
+    url: jdbc:mysql://localhost:3306/mqtt
+    username: mqtt
+    password: xjTSRM2ZJG3TP7dA
+  application:
+    name: mqtt-client  # Eureka服务在保存元素据时的第一层key值
+
+logging:
+  level:
+    com:
+      iot: debug
+  file: ErrLog.log
+
+mybatis:
+  mapper-locations: classpath:com/iot/mapper/*.xml
+  type-aliases-package: com.iot.pojo
+  configuration:
+    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
+
+#eureka:
+#  client:
+#    service-url:
+#      # eureka 服务地址, 如果是集群的话, 需要指定其他集群eureka地址
+#      defaultZone: http://localhost:10086/eureka,http://localhost:10087/eureka
+#      #defaultZone: http://192.168.0.104:10086/eureka,http://192.168.0.104:10087/eureka
+#    register-with-eureka: true # 默认就是true, 服务提供者启动时, 该值位为true的话, 则会向EruekaServer发起一个Rest请求,
+#                               # 携带自己的元素据信息, Eureka会把这些信息保存到一个双层的Map中
+#                               # 第一层Map的key就是服务id, 一般是配置中的spring.application.name
+#                               # 第二层Map的key就是服务的实例id, 一般是host+serverId+port
+#                               # 也就是说配置了相同的serverId(服务id), 可以形成一个集群
+#  instance:
+#    # 更倾向于使用ip而不是主机名,默认是主机名
+#    prefer-ip-address: true
+#    # ip配置
+#    ip-address: 127.0.0.1
+#    # 服务失效时间，默认90秒
+#    lease-expiration-duration-in-seconds: 10
+#    # 服务续约间隔，默认30秒
+#    lease-renewal-interval-in-seconds: 10
+
