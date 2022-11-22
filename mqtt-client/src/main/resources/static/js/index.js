@@ -300,5 +300,9 @@ $(function(){
 		$(".theme .right").on("click",function(){
 			$("html").addClass("darkness");
 		})
+		
+		$(".lnr-user").on("click",function(){
+			window.location.href = url + "/usermanage.html";
+		})
 	}); 	
 })

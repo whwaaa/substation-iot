@@ -41,6 +41,30 @@ public class UserService {
         return userMapper.selectByExample(example);
     }
 
+    /**
+     * 查询未授权的账号
+     * @return :
+     */
+    @Transactional(propagation = Propagation.REQUIRED,readOnly = true)
+    public List<User> queryIsDeleteList() {
+        Example example = new Example(User.class);
+        example.createCriteria().andEqualTo("isDelete", 1);
+        return userMapper.selectByExample(example);
+    }
+
+
+    /**
+     * 查询重置密码的账户
+     * @return :
+     */
+    @Transactional(propagation = Propagation.REQUIRED,readOnly = true)
+    public List<User> queryResetPasswd() {
+        Example example = new Example(User.class);
+        example.createCriteria().andEqualTo("isDelete", 2);
+        return userMapper.selectByExample(example);
+    }
+
+
 
     /**
      * 添加一条数据
@@ -49,6 +73,13 @@ public class UserService {
      */
     @Transactional(propagation = Propagation.REQUIRED,rollbackFor = {Exception.class})
     public Integer add(User user) {
+        Example example = new Example(User.class);
+        example.createCriteria().andEqualTo("account", user.getAccount());
+        List<User> users = userMapper.selectByExample(example);
+        if ( users!=null && users.size()!=0 && users.get(0)!=null )
+            return null;
+        user.setIsDelete(1);
+        user.setPasswd("123456");
         user.setCreateTime(new Timestamp(System.currentTimeMillis()));
         return userMapper.insert(user);
     }
@@ -67,15 +98,70 @@ public class UserService {
     }
 
     /**
-     * 根据主键删除逻辑一条数据
-     * @param id :需要逻辑删除的数据主键id
+     * 授权账号
+     * @param account :
+     * @return :
+     */
+    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = {Exception.class})
+    public Integer authAccount(String account) {
+        User user = new User();
+        user.setIsDelete(0);
+        user.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+        Example example = new Example(User.class);
+        example.createCriteria().andEqualTo("account", account);
+        return userMapper.updateByExampleSelective(user, example);
+    }
+
+    /**
+     * 撤销密码重置
+     * @param account :
+     * @return :
+     */
+    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = {Exception.class})
+    public Integer requestResetAccount(String account) {
+        User user = new User();
+        user.setIsDelete(2);
+        Example example = new Example(User.class);
+        example.createCriteria().andEqualTo("account", account);
+        return userMapper.updateByExampleSelective(user, example);
+    }
+
+    /**
+     * 撤销密码重置
+     * @param account :
+     * @return :
+     */
+    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = {Exception.class})
+    public Integer unResetAccount(String account) {
+        User user = new User();
+        user.setIsDelete(0);
+        Example example = new Example(User.class);
+        example.createCriteria().andEqualTo("account", account);
+        return userMapper.updateByExampleSelective(user, example);
+    }
+    /**
+     * 重置密码
+     * @param account :
+     * @return :
+     */
+    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = {Exception.class})
+    public Integer resetAccount(String account) {
+        User user = new User();
+        user.setIsDelete(0);
+        user.setPasswd("123456");
+        Example example = new Example(User.class);
+        example.createCriteria().andEqualTo("account", account);
+        return userMapper.updateByExampleSelective(user, example);
+    }
+
+
+
+    /**
+     * 根据主键删除一条数据
      * @return :
      */
     @Transactional(propagation = Propagation.REQUIRED,rollbackFor = {Exception.class})
     public Integer deleteById(Long id) {
-        User user = new User();
-        user.setId(id);
-        user.setIsDelete(1);//1:逻辑删除
-        return userMapper.updateByPrimaryKeySelective(user);
+        return userMapper.deleteByPrimaryKey(id);
     }
 }

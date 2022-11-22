@@ -16,12 +16,14 @@ public class LoginInterceptor  implements HandlerInterceptor {
         //Boolean isLogin = (Boolean)session.getAttribute("isLogin");
         String username = null;
         String time = null;
+        String name = null;
         Cookie[] cookies = request.getCookies();
         if ( cookies != null ) {
             for (Cookie cookie : cookies) {
-                String name = cookie.getName();
-                if ("iot-username".equals(name)) username = cookie.getValue();
-                if ("iot-time".equals(name)) time = cookie.getValue();
+                String cookieName = cookie.getName();
+                if ("iot-username".equals(cookieName)) username = cookie.getValue();
+                if ("iot-time".equals(cookieName)) time = cookie.getValue();
+                if ("iot-name".equals(cookieName)) name = cookie.getValue();
             }
         }
         if (UserPasswordMap.userPasswdMap.get(username) != null
@@ -35,6 +37,11 @@ public class LoginInterceptor  implements HandlerInterceptor {
             cookieTime.setPath("/");
             cookieTime.setMaxAge(60*60*24*7);
             response.addCookie(cookieTime);
+
+            Cookie cookieName = new Cookie("iot-name", name);
+            cookieTime.setPath("/");
+            cookieTime.setMaxAge(60*60*24*7);
+            response.addCookie(cookieName);
             return true;
 
         } else {

@@ -68,14 +68,40 @@
 				background: #2ecc71;
 				border-color: #2ecc71;
 			}
+			.left{
+				position: absolute;
+				left: 8%;
+				width: 40%;
+				height: 30px;
+				text-align: right;
+				/* background-color: #0062CC; */
+			}
+			.right{
+				text-align: left;
+				position: absolute;
+				right: 7%;
+				width: 40%;
+				height: 30px;
+				/* background-color: #ffaa7f; */
+			}
+			.left a, .right a{
+				font-size: 12px;
+				color: white;
+			}
+			.hidden{
+				display: none;
+			}
 		</style>
 	</head>
 	<body>
 		<div class="box">
 			<h1>登录</h1>
-			<input type="text" placeholder="账号" />
-			<input type="password" placeholder="密码" />
+			<h2 class="h2 hidden" style="color: white;">向管理员发起重置密码</h2>
+			<input class="account" type="text" placeholder="手机号" />
+			<input class="passwd" type="password" placeholder="密码" />
 			<a class="submit login">登录</a>
+			<div class="left"><a href="javascript:void(0);">忘记密码？</a></div>
+			<div class="right"><a href="javascript:void(0);">新号注册</a></div>
 		</div>
 	</body>
 	<script src="js/common.js" type="text/javascript" charset="utf-8"></script>
@@ -86,6 +112,7 @@
 		$(function(){
 			
 			function login(){
+				layer.load(0)
 				$.ajax({
 					type: "POST",
 					data: {
@@ -104,6 +131,7 @@
 						if ( data.code == 200 ) {
 							$.cookie('iot-username', data.obj.username, { expires: 7, path: '/' });
 							$.cookie('iot-time', data.obj.time, { expires: 7, path: '/' });
+							$.cookie('iot-name', data.obj.user.name, { expires: 7, path: '/' });
 							window.location.href = url + "/index.html";
 						} else {
 							layer.msg(data.msg,function(){},2000)
@@ -112,9 +140,109 @@
 				})
 			}
 			
+			function resetPasswd(){
+				layer.load(0)
+				$.ajax({
+					type: "POST",
+					data: {
+						_method:"PUT",
+						account:$("input").eq(0).val().trim()
+					},
+					url: url + "/user/requestreset",
+					dataType: "json",
+					xhrFields: {
+						// 允许携带cookie跨域
+						withCredentials: true
+					},
+					
+					crossDomain: true,
+					success: function (data) {
+						layer.closeAll();
+						if ( data.code == 201 ) {
+							layer.msg(data.msg, {time: 20000 }, function(){});
+						} else {
+							layer.msg(data.msg, function(){},3000)
+						}
+					}
+				})
+				
+			}
+			
+			
+			// 电话号码检测
+			function phoneCheck(phone){
+				var reg = /^((0\d{2,3}-\d{7,8})|(1[345789]\d{9}))$/;
+				var reg2 = /^[1][3,4,5,6.7,8,9][0-9]{9}$/;
+				if(!reg.test(phone) && !reg2.test(phone)){
+					return false;
+				}
+				return true;
+			}
+			
+			function register(){
+				layer.load(0);
+				$.ajax({
+					type: "POST",
+					data: {
+						account:$("input").eq(0).val().trim(),
+						name:$("input").eq(1).val().trim()
+					},
+					url: url + "/user",
+					dataType: "json",
+					xhrFields: {
+						// 允许携带cookie跨域
+						withCredentials: true
+					},
+					crossDomain: true,
+					success: function (data) {
+						layer.closeAll();
+						if ( data.code == 201 ) {
+							layer.msg('注册成功，初始密码为123456，联系管理员授权成功后方可登录。', {time: 20000 }, function(){});
+						} else {
+							layer.msg("手机号已存在！请检查重新输入！",function(){},3000)
+						}
+					}
+				})
+				
+			}
+			
 			$(document).ready(function(){ 
+				$(".left").on("click", function(){
+					$("h1").addClass("hidden");
+					$(".h2").removeClass("hidden");
+					$(".passwd").val("");
+					$(".passwd").attr("readonly", true);
+					$(".submit").text("请求重置")
+					$(".login").off("click");
+					$(".login").on("click", function(){
+						resetPasswd();
+					})
+					
+				})
+				$(".right").on("click", function(){
+					$(".h2").addClass("hidden");
+					$("h1").text("注册");
+					$("h1").removeClass("hidden");
+					$(".account").val("");
+					$(".passwd").prop("placeholder", "手机号");
+					$(".passwd").val("");
+					$(".passwd").attr("readonly", false);
+					$(".passwd").attr("type", "text");
+					$(".passwd").prop("placeholder", "姓名、昵称");
+					$(".submit").text("注册")
+					$(".login").off("click");
+					$(".login").on("click", function(){
+						let phone = $(".account").val().trim();
+						let res = phoneCheck(phone);
+						if ( res ) {
+							register();
+						} else {
+							layer.msg("手机号码格式有误！",function(){})
+						}
+					})
+				})
+				
 				$(".login").on("click", function(){
-					layer.load(0)
 					login();
 				})
 			})

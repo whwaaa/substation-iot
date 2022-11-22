@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html class="darkness admin">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<link rel="stylesheet" href="css/Linearicons-Free-v1.0.0.css">
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="css/default.css"/>
+		<link rel="stylesheet" type="text/css" href="css/userManage.css"/>
+		<title>用户管理</title>
+	</head>
+	<body>
+		<div class="mark">
+		
+		<div class="head">
+			
+			<div class="left">
+				<span class="return lnr lnr-exit"></span>
+			</div>
+			
+			<div class="right">
+				<div class="headImg">
+					<span class="lnr lnr-user">
+				</div>
+				<div class="adminbox"><span class="lnr lnr-user">管理员</div>
+				<div class="name">昵称昵称称</div>
+				<div class="account">12345678901</div>
+			</div>
+		</div>
+		
+		<div class="con">
+			<div class="con1">
+				<div class="title">密码修改</div>
+				<input class="input1 oldPasswd" type="text" placeholder="旧密码">
+				<input class="input2 newPasswd" type="text" placeholder="新密码">
+				<button type="button" class="passwdModify mui-btn mui-btn-danger  mui-btn-outlined">确认修改</button>
+			</div>
+			
+			<div class="con2">
+				<div class="title">注册授权</div>
+				<input class="input1 auth-account" type="text" placeholder="申请注册的账号" readonly>
+				<input class="input2 auth-msg" type="text" placeholder="申请说明" readonly>
+				<div class="but">
+					<button type="button" class="authpre mui-btn mui-btn-danger mui-btn-outlined">上一个</button>
+					<button type="button" class="authnext mui-btn mui-btn-danger mui-btn-outlined">下一个</button>
+					
+					<button type="button" class="authbut mui-btn mui-btn-danger mui-btn-outlined">授权</button>
+					<button type="button" class="unauthbut mui-btn mui-btn-danger mui-btn-outlined">删除</button>
+				</div>
+			</div>
+			
+			<div class="con3">
+				<div class="title">密码重置</div>
+				<input class="input1 reset-account" type="text" placeholder="重置密码的账号" readonly>
+				<div class="but">
+					<button type="button" class="resetpre mui-btn mui-btn-danger mui-btn-outlined">上一个</button>
+					<button type="button" class="resetnext mui-btn mui-btn-danger mui-btn-outlined">下一个</button>
+					
+					<button type="button" class="resetbut mui-btn mui-btn-danger mui-btn-outlined">重置</button>
+					<button type="button" class="unresetbut mui-btn mui-btn-danger mui-btn-outlined">撤销</button>
+				</div>
+			</div>
+			
+			
+		</div>
+		<div>
+			<div class="theme">
+				<!-- <span class="theme-title">THEME</span> -->
+				<div class="left"></div>
+				<div class="right"></div>
+			</div>
+		</div>
+		
+		</div>
+	</body>
+	
+	<script src="js/common.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery-3.4.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery.cookie.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/layer3.5.1.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<!-- <script src="js/userManage.js" type="text/javascript" charset="utf-8"></script> -->
+</html>

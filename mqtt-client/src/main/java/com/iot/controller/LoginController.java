@@ -32,11 +32,11 @@ public class LoginController {
         if ( username!=null && !"".equals(username.trim())
                 && password!=null && !"".equals(password.trim()) ) {
             List<User> users = userService.queryUsernameAndPassword(username.trim(), password.trim());
-            if ( users.size() == 1 ) {
+            if ( users.size() == 1 && users.get(0).getIsDelete() == 0 ) {// 账号已授权
                 // username : 当前时间戳
                 String time = String.valueOf(System.currentTimeMillis());
                 UserPasswordMap.userPasswdMap.put(username, time);
-                return new AjaxResult(200, "ok", new LoginSuccess(username, time));
+                return new AjaxResult(200, "ok", new LoginSuccess(username, time, users.get(0)));
             }
         }
         return new AjaxResult(401, "用户名或密码错误!");
