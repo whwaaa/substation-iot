@@ -1,10 +1,10 @@
 
 //var admin = false;
+// var iotAccount = "admin"
+// var iotName = "管理员"
 var admin = false;
-// var iotAccount = $.cookie('iot-username');
-// var iotName = $.cookie('iot-name');
-var iotAccount = "admin"
-var iotName = "管理员"
+var iotAccount = $.cookie('iot-username');
+var iotName = $.cookie('iot-name');
 
 if ( iotAccount == "admin" ) {
 	admin = true;

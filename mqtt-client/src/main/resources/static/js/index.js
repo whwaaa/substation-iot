@@ -2,8 +2,8 @@
 $(function(){
 
 	var promptMessage = {
-		"client001":{"dId":"1","serial":"0","on":"大门已打开","off":"大门已关闭","oning":"大门打开中...","offing":"大门关闭中..."},
-		"client002":{"dId":"2","serial":"1","on":"防鼠挡板已打开","off":"防鼠挡板已关闭","oning":"防鼠挡板打开中...","offing":"防鼠挡板关闭中..."},
+		"client001":{"dId":"1","serial":"0","on":"大门已合好","off":"大门未合好","oning":"大门打开中...","offing":"大门关闭中..."},
+		"client002":{"dId":"2","serial":"1","on":"防鼠挡板已合好","off":"防鼠挡板未合好","oning":"防鼠挡板打开中...","offing":"防鼠挡板关闭中..."},
 		"client003":{"dId":"3","serial":"2","on":"感应地灯已开启","off":"感应地灯已关闭","oning":"感应地灯开启中...","offing":"感应地灯关闭中..."}
 	}
 
