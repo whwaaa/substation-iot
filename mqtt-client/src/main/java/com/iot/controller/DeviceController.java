@@ -6,7 +6,6 @@ import com.iot.config.ParamConfig;
 import com.iot.pojo.Device;
 import com.iot.service.DeviceService;
 import com.iot.utils.AjaxResult;
-import com.iot.utils.DateFormatUtils;
 import com.iot.vo.DeviceState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
-import java.text.ParseException;
-import java.util.Date;
 
 @RestController
 @RequestMapping("/device")
@@ -77,6 +74,14 @@ public class DeviceController {
     }
 
 
+//    // 根据主键查询
+//    @GetMapping(path = "/state/{clientId}")
+//    public AjaxResult queryStateByClientId(@PathVariable String clientId) {
+//
+//        Long dId = Long.valueOf(clientId.replaceAll("client", ""));
+//        Device device = service.queryById(dId);
+//        return new AjaxResult(200, "ok", new DeviceState(clientId, "on", null, device.getSettings()));
+//    }
     // 根据主键查询
     @GetMapping(path = "/state/{clientId}")
     public AjaxResult queryStateByClientId(@PathVariable String clientId) {
@@ -103,11 +108,16 @@ public class DeviceController {
 //                } catch (ParseException e) {
 //                    e.printStackTrace();
 //                }
-                return new AjaxResult(200, "ok", new DeviceState(clientId, "on", connectedTime));
+                Long dId = Long.valueOf(clientId.replaceAll("client", ""));
+                Device device = service.queryById(dId);
+                return new AjaxResult(200, "ok", new DeviceState(clientId, "on", connectedTime, device.getSettings()));
             }
         }
         return new AjaxResult(500, "设备"+clientId+"不在线!");
     }
 
-
+    public static void main(String[] args) {
+        Long client = Long.valueOf("client003".replaceAll("client", ""));
+        System.out.println(client);
+    }
 }

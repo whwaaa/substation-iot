@@ -78,9 +78,11 @@ $(document).ready(function(){
 				if (data.code == 200) {
 					layer.msg("密码修改成功!")
 					$.cookie('iot-time', 0, { expires: 1, path: '/' });
-					setTimeout(function() {
-						window.location.href = url + "/login.html";
-					}, 1500);
+					setTimeout(
+						function() {
+							window.location.href = url + "/login.html";
+						}
+					,1500);
 				}
 			},
 			error: function(e){

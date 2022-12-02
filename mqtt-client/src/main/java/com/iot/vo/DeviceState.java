@@ -7,11 +7,21 @@ public class DeviceState {
     private String state;
     private Date connectedTime;
     private String strEndTime;
+    private String settings;
 
-    public DeviceState(String clientId, String state, String strEndTime) {
+    public DeviceState(String clientId, String state, String strEndTime, String settings) {
         this.clientId = clientId;
         this.state = state;
         this.strEndTime = strEndTime;
+        this.settings = settings;
+    }
+
+    public String getSettings() {
+        return settings;
+    }
+
+    public void setSettings(String settings) {
+        this.settings = settings;
     }
 
     public String getStrEndTime() {

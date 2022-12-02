@@ -95,13 +95,29 @@
 	</head>
 	<body>
 		<div class="box">
-			<h1>登录</h1>
-			<h2 class="h2 hidden" style="color: white;">向管理员发起重置密码</h2>
-			<input class="account" type="text" placeholder="手机号" />
-			<input class="passwd" type="password" placeholder="密码" />
-			<a class="submit login">登录</a>
-			<div class="left"><a href="javascript:void(0);">忘记密码？</a></div>
-			<div class="right"><a href="javascript:void(0);">新号注册</a></div>
+			<div class="login">
+				<h1>登录</h1>
+				<input class="account" type="text" placeholder="手机号" />
+				<input class="passwd" type="password" placeholder="密码" />
+				<a class="submit logbut">登录</a>
+				<div class="left"><a href="javascript:void(0);">忘记密码？</a></div>
+				<div class="right"><a href="javascript:void(0);">新号注册</a></div>
+			</div>
+			<div class="forget hidden">
+				<h1>密码重置</h1>
+				<input class="account" type="text" placeholder="手机号" />
+				<a class="submit forbut">重置</a>
+				<div class="left"><a href="javascript:void(0);">密码登录</a></div>
+				<div class="right"><a href="javascript:void(0);">新号注册</a></div>
+			</div>
+			<div class="register hidden">
+				<h1>注册</h1>
+				<input class="account" type="text" placeholder="手机号" />
+				<input class="name" type="text" placeholder="姓名、昵称" />
+				<a class="submit regbut">注册</a>
+				<div class="left"><a href="javascript:void(0);">忘记密码？</a></div>
+				<div class="right"><a href="javascript:void(0);">密码登录</a></div>
+			</div>
 		</div>
 	</body>
 	<script src="js/common.js" type="text/javascript" charset="utf-8"></script>
@@ -116,8 +132,8 @@
 				$.ajax({
 					type: "POST",
 					data: {
-						username:$("input").eq(0).val().trim(),
-						password:$("input").eq(1).val().trim()
+						username:$(".account").eq(0).val().trim(),
+						password:$(".passwd").eq(0).val().trim()
 					},
 					url: url + "/login",
 					dataType: "json",
@@ -146,7 +162,7 @@
 					type: "POST",
 					data: {
 						_method:"PUT",
-						account:$("input").eq(0).val().trim()
+						account:$(".account").eq(1).val().trim()
 					},
 					url: url + "/user/requestreset",
 					dataType: "json",
@@ -168,7 +184,6 @@
 				
 			}
 			
-			
 			// 电话号码检测
 			function phoneCheck(phone){
 				var reg = /^((0\d{2,3}-\d{7,8})|(1[345789]\d{9}))$/;
@@ -184,8 +199,8 @@
 				$.ajax({
 					type: "POST",
 					data: {
-						account:$("input").eq(0).val().trim(),
-						name:$("input").eq(1).val().trim()
+						account:$(".account").eq(2).val().trim(),
+						name:$(".name").eq(0).val().trim()
 					},
 					url: url + "/user",
 					dataType: "json",
@@ -207,44 +222,92 @@
 			}
 			
 			$(document).ready(function(){ 
-				$(".left").on("click", function(){
-					$("h1").addClass("hidden");
-					$(".h2").removeClass("hidden");
-					$(".passwd").val("");
-					$(".passwd").attr("readonly", true);
-					$(".submit").text("请求重置")
-					$(".login").off("click");
-					$(".login").on("click", function(){
-						resetPasswd();
-					})
-					
-				})
-				$(".right").on("click", function(){
-					$(".h2").addClass("hidden");
-					$("h1").text("注册");
-					$("h1").removeClass("hidden");
-					$(".account").val("");
-					$(".passwd").prop("placeholder", "手机号");
-					$(".passwd").val("");
-					$(".passwd").attr("readonly", false);
-					$(".passwd").attr("type", "text");
-					$(".passwd").prop("placeholder", "姓名、昵称");
-					$(".submit").text("注册")
-					$(".login").off("click");
-					$(".login").on("click", function(){
-						let phone = $(".account").val().trim();
-						let res = phoneCheck(phone);
-						if ( res ) {
-							register();
-						} else {
-							layer.msg("手机号码格式有误！",function(){})
-						}
-					})
-				})
-				
-				$(".login").on("click", function(){
+				  
+				$(".logbut").on("click", function(){
 					login();
 				})
+				$(".forbut").on("click", function(){
+					resetPasswd();
+				})
+				$(".regbut").on("click", function(){
+					let phone = $(".account").eq(2).val().trim();
+					let res = phoneCheck(phone);
+					if ( res ) {
+						register();
+					} else {
+						layer.msg("手机号码格式有误！",function(){})
+					}
+				})
+				$(".left").eq(0).on("click", function(){//忘记密码
+					$(".account").eq(1).val($(".account").eq(0).val())
+					$(".login").addClass("hidden");
+					$(".forget").removeClass("hidden");
+					$(".register").addClass("hidden");
+				})
+				$(".right").eq(0).on("click", function(){//新号注册
+					$(".login").addClass("hidden");
+					$(".forget").addClass("hidden");
+					$(".register").removeClass("hidden");
+				})
+				$(".left").eq(1).on("click", function(){//密码登录
+					$(".login").removeClass("hidden");
+					$(".forget").addClass("hidden");
+					$(".register").addClass("hidden");
+				})
+				$(".right").eq(1).on("click", function(){//新号注册
+					$(".login").addClass("hidden");
+					$(".forget").addClass("hidden");
+					$(".register").removeClass("hidden");
+				})
+				$(".left").eq(2).on("click", function(){//忘记密码
+					$(".login").addClass("hidden");
+					$(".forget").removeClass("hidden");
+					$(".register").addClass("hidden");
+				})
+				$(".right").eq(2).on("click", function(){//密码登录
+					$(".login").removeClass("hidden");
+					$(".forget").addClass("hidden");
+					$(".register").addClass("hidden");
+				})
+				
+				// $(".left").on("click", function(){
+				// 	$("h1").addClass("hidden");
+				// 	$(".h2").removeClass("hidden");
+				// 	$(".passwd").val("");
+				// 	$(".passwd").attr("readonly", true);
+				// 	$(".submit").text("请求重置")
+				// 	$(".login").off("click");
+				// 	$(".login").on("click", function(){
+				// 		resetPasswd();
+				// 	})
+					
+				// })
+				// $(".right").on("click", function(){
+				// 	$(".h2").addClass("hidden");
+				// 	$("h1").text("注册");
+				// 	$("h1").removeClass("hidden");
+				// 	$(".account").val("");
+				// 	$(".passwd").prop("placeholder", "手机号");
+				// 	$(".passwd").val("");
+				// 	$(".passwd").attr("readonly", false);
+				// 	$(".passwd").attr("type", "text");
+				// 	$(".passwd").prop("placeholder", "姓名、昵称");
+				// 	$(".submit").text("注册")
+				// 	$(".login").off("click");
+				// 	$(".login").on("click", function(){
+				// 		let phone = $(".account").val().trim();
+				// 		let res = phoneCheck(phone);
+				// 		if ( res ) {
+				// 			register();
+				// 		} else {
+				// 			layer.msg("手机号码格式有误！",function(){})
+				// 		}
+				// 	})
+				// })
+				
+				// $(".login").on("click", function(){
+				// 	login();
+				// })
 			})
 		})
 	</script>
