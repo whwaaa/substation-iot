@@ -13,3 +13,113 @@ html,body{
 	color: #fbfbfb;
 	font-weight: 100;
 }
+
+.mark{
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 1000px;
+	width: 100%;
+	background-color: rgba(26, 26, 26, 0.9);
+	display: none;
+}
+.darkness .mark{
+	display: block;
+}
+
+.head{
+	position: fixed;
+	top: 0;
+	height: 70px;
+	width: 100%;
+	background: #F7F7F7;
+	z-index: 3;
+	/* border-bottom: 1px #E5E5E5 solid; */
+	/* border-bottom: 1px white solid; */
+	/* margin-bottom: 30px; */
+}
+.darkness .head{
+	background: #18171A;
+}
+.foot{
+	position: fixed;
+	bottom: 0px;
+	width: 100%;
+	height: 70px;
+	background: #F7F7F7;
+}
+.darkness .foot{
+	background: #18171A;
+}
+
+
+.theme-title{
+	display: inline-block;
+	position: absolute;
+	left: 0px;
+	top: -25px;
+}
+.theme{
+    position: absolute;
+    left: 36px;
+    bottom: 12px;
+    border-radius: 3px;
+    width: 100px;
+    height: 30px;
+	
+}
+.theme div{
+	
+}
+.theme .left{
+	position: absolute;
+	top: 0;
+	height: 26px;
+	width: 45px;
+	background-color: white;
+	left: 0px;
+	border: #F0AD4E solid 4px;
+}
+.theme .right{
+	position: absolute;
+	background-color: black;
+	
+	top: 3px;
+	height: 19px;
+	width: 43px;
+	right: 2px;
+	border: none;
+}
+.darkness .theme .left{
+	top: 3px;
+	height: 19px;
+	width: 43px;
+	left: 2px;
+	border: none;
+}
+.darkness .theme .right{
+	border: #F0AD4E solid 4px;
+	top: 0px;
+	right: 0px;
+	height: 26px;
+	width: 45px;
+}
+
+.lnr-user{
+	position: absolute;
+	right: 15px;
+	top: 20px;
+}
+.title{
+	position: absolute;
+	height: 3.4375rem;
+	left: 50%;
+	transform: translateX(-50%);
+	text-align: center;
+	line-height: 3.4375rem;
+	font-size: large;
+}
+
+.hidden {
+	display: none !important;
+}

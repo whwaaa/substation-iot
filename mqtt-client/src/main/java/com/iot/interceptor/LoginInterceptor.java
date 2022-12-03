@@ -17,6 +17,7 @@ public class LoginInterceptor  implements HandlerInterceptor {
         String username = null;
         String time = null;
         String name = null;
+        String settings = null;
         Cookie[] cookies = request.getCookies();
         if ( cookies != null ) {
             for (Cookie cookie : cookies) {
@@ -24,24 +25,30 @@ public class LoginInterceptor  implements HandlerInterceptor {
                 if ("iot-username".equals(cookieName)) username = cookie.getValue();
                 if ("iot-time".equals(cookieName)) time = cookie.getValue();
                 if ("iot-name".equals(cookieName)) name = cookie.getValue();
+                if ("iot-settings".equals(cookieName)) name = cookie.getValue();
             }
         }
         if (UserPasswordMap.userPasswdMap.get(username) != null
         && UserPasswordMap.userPasswdMap.get(username).equals(time)) {
-            Cookie cookieUsername = new Cookie("iot-username", username);
-            cookieUsername.setPath("/");
-            cookieUsername.setMaxAge(60*60*24*7);
-            response.addCookie(cookieUsername);
-
-            Cookie cookieTime = new Cookie("iot-time", time);
-            cookieTime.setPath("/");
-            cookieTime.setMaxAge(60*60*24*7);
-            response.addCookie(cookieTime);
-
-            Cookie cookieName = new Cookie("iot-name", name);
-            cookieTime.setPath("/");
-            cookieTime.setMaxAge(60*60*24*7);
-            response.addCookie(cookieName);
+//            Cookie cookieUsername = new Cookie("iot-username", username);
+//            cookieUsername.setPath("/");
+//            cookieUsername.setMaxAge(60*60*24*365);
+//            response.addCookie(cookieUsername);
+//
+//            Cookie cookieTime = new Cookie("iot-time", time);
+//            cookieTime.setPath("/");
+//            cookieTime.setMaxAge(60*60*24*365);
+//            response.addCookie(cookieTime);
+//
+//            Cookie cookieName = new Cookie("iot-name", name);
+//            cookieTime.setPath("/");
+//            cookieTime.setMaxAge(60*60*24*365);
+//            response.addCookie(cookieName);
+//
+//            Cookie cookieSet = new Cookie("iot-settings", name);
+//            cookieSet.setPath("/");
+//            cookieSet.setMaxAge(60*60*24*365);
+//            response.addCookie(cookieSet);
             return true;
 
         } else {

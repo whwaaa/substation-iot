@@ -69,6 +69,17 @@ public class UserController {
         return new AjaxResult(500, "服务器内部异常, 请稍后再试!");
     }
 
+    // 根据用户名更新
+    @PutMapping(path = "/username/{username}")
+    public AjaxResult updateById(@PathVariable(value = "username") String username, User user){
+        Integer res = service.updateByAccount(username, user);
+        if(res != 0){
+            return new AjaxResult(200,"更新成功");
+        }
+        return new AjaxResult(500, "服务器内部异常, 请稍后再试!");
+    }
+
+
     // 授权账号
     @PutMapping(path = "/auth")
     public AjaxResult authAccount(@PathParam(value = "account") String account){

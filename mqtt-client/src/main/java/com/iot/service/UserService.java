@@ -98,6 +98,22 @@ public class UserService {
     }
 
     /**
+     * 根据主用户名更新
+     * @param account :用户名
+     * @param user :更新的封装对象
+     * @return :
+     */
+    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = {Exception.class})
+    public Integer updateByAccount(String account, User user) {
+        Example userExample = new Example(User.class);
+        userExample.createCriteria().andEqualTo("account", account);
+        user.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+        return userMapper.updateByExampleSelective(user, userExample);
+    }
+
+
+
+    /**
      * 授权账号
      * @param account :
      * @return :

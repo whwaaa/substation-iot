@@ -145,9 +145,10 @@
 					success: function (data) {
 						layer.closeAll();
 						if ( data.code == 200 ) {
-							$.cookie('iot-username', data.obj.username, { expires: 7, path: '/' });
-							$.cookie('iot-time', data.obj.time, { expires: 7, path: '/' });
-							$.cookie('iot-name', data.obj.user.name, { expires: 7, path: '/' });
+							$.cookie('iot-username', data.obj.username, { expires: 365, path: '/' });
+							$.cookie('iot-time', data.obj.time, { expires: 365, path: '/' });
+							$.cookie('iot-name', data.obj.user.name, { expires: 365, path: '/' });
+							$.cookie('iot-settings', data.obj.user.settings, { expires: 365, path: '/' });
 							window.location.href = url + "/index.html";
 						} else {
 							layer.msg(data.msg,function(){},2000)

@@ -488,40 +488,19 @@ $(function(){
 			}
 		})
 	}
-	// ajax配合拦截器跳转登陆界面
-	function myComplete(xhr, status){
-		// 通过xhr取得响应头
-		let REDIRECT = xhr.getResponseHeader("REDIRECT");
-		let TOKEN_MSG = xhr.getResponseHeader("TOKEN_MSG");
-		// 如果响应头中包含 REDIRECT 则说明是拦截器返回的
-		if(REDIRECT == "REDIRECT"){
-			if(TOKEN_MSG == "no-token"){
-				layer.msg("请先登陆")
-			}else if(TOKEN_MSG == "token-invalid"){
-				layer.msg("登陆信息过期,请再次登陆")
-			}
-			// 跳到登陆界面, 传入当前URL作为参数, 登陆成功再跳回来
-			setTimeout(function (){
-				let callBackUrL = window.location.href;
-				window.location.href = url + "/login.html";
-				// if(crossDomainMode){
-				// 	window.location.href = projectUrl + xhr.getResponseHeader("CONTENTPATH") + "?callBackUrL=" + callBackUrL;
-				// }else{
-				// 	window.location.href = xhr.getResponseHeader("CONTENTPATH") + "?callBackUrL=" + callBackUrL;
-				// }
-			}, 1500)
-		}
-	}
-
 	
 	$(document).ready(function(){ 
 
 		//查询在线状态
+		if (!debug){
+			
 		var queryStateTime = setInterval( function(){
 			if ( client001StateQueryOk ) queryClient001State();
 			if ( client002StateQueryOk ) queryClient002State();
 			if ( client003StateQueryOk ) queryClient003State();
 		}, 1000 );
+		
+		}
 		
 		assistFloodLightOpreate();
 		
@@ -542,17 +521,15 @@ $(function(){
 		// 	}, 3000);
 		// })
 		
-		$(".theme .left").on("click",function(){
-			$("html").removeClass("darkness");
-		})
-		$(".theme .right").on("click",function(){
-			$("html").addClass("darkness");
-		})
 		
-		$(".lnr-user").on("click",function(){
-			window.location.href = url + "/usermanage.html";
-		})
 		
 		// lightTim();
+		
+		$(".lnr-exit").on("click", function(){
+			$.cookie('iot-lastPage', "", { expires: -1, path: '/' });
+			if(debug) window.location.href = "index.html";
+			if(!debug)
+			window.location.href = url + "/index.html";
+		})
 	}); 	
 })
