@@ -1,5 +1,7 @@
 var bootModeUpdateLock = false;//焦点在辅助照明控制面板时锁定设置更新
 $(function(){
+	
+	var canControl = false;
 
 	var promptMessage = {
 		"client001":{"class":"door","dId":"1","serial":"0","on":"大门已合好","off":"大门未合好","oning":"大门打开中...","offing":"大门关闭中..."},
@@ -221,42 +223,47 @@ $(function(){
 			})
 			//保存
 			$(".lightSave").on("click", function(e){
-				sendAssistLightSetting["bootMode"] = parseInt($("input[name='mode']:checked").val());
-				sendAssistLightSetting["startTimeHour"] = parseInt(($(".hour1").scrollTop()/30).toFixed());
-				sendAssistLightSetting["startTimeMin"] = parseInt(($(".min1").scrollTop()/6).toFixed());
-				sendAssistLightSetting["endTimeHour"] = parseInt(($(".hour2").scrollTop()/30).toFixed());
-				sendAssistLightSetting["endTimeMin"] = parseInt(($(".min2").scrollTop()/6).toFixed());
-				sendAssistLightSetting["lightValue"] = parseInt($(".light_value_ipt").val());
-				
-				layer.load(0)
-				$.ajax({
-					type: "POST",
-					url: url + "/device/" + promptMessage.client003.dId,
-					dataType: "json",
-					data: {settings:JSON.stringify(sendAssistLightSetting),_method:"PUT"},
-					xhrFields: {
-						// 允许携带cookie跨域
-						withCredentials: true
-					},
-					crossDomain: true,
-					success: function (data) {
-						layer.closeAll()
-						if(data.code == 200){
-							layer.msg("保存成功");
-							receiveAssistLightSetting = sendAssistLightSetting;
-							bootModeUpdateLock = false;							
+				if ( canControl ) {
+					sendAssistLightSetting["bootMode"] = parseInt($("input[name='mode']:checked").val());
+					sendAssistLightSetting["startTimeHour"] = parseInt(($(".hour1").scrollTop()/30).toFixed());
+					sendAssistLightSetting["startTimeMin"] = parseInt(($(".min1").scrollTop()/6).toFixed());
+					sendAssistLightSetting["endTimeHour"] = parseInt(($(".hour2").scrollTop()/30).toFixed());
+					sendAssistLightSetting["endTimeMin"] = parseInt(($(".min2").scrollTop()/6).toFixed());
+					sendAssistLightSetting["lightValue"] = parseInt($(".light_value_ipt").val());
+					
+					layer.load(0)
+					$.ajax({
+						type: "POST",
+						url: url + "/device/" + promptMessage.client003.dId,
+						dataType: "json",
+						data: {settings:JSON.stringify(sendAssistLightSetting),_method:"PUT"},
+						xhrFields: {
+							// 允许携带cookie跨域
+							withCredentials: true
+						},
+						crossDomain: true,
+						success: function (data) {
+							layer.closeAll()
+							if(data.code == 200){
+								layer.msg("保存成功");
+								receiveAssistLightSetting = sendAssistLightSetting;
+								bootModeUpdateLock = false;							
+							}
+						},
+						error: function(e){
+							layer.msg("服务器异常  GET: " + url + "/device/" + promptMessage.client003.dId, function(){})
+						},
+						complete : function(xhr, status) {
+							
+							myComplete(xhr, status);
 						}
-					},
-					error: function(e){
-						layer.msg("服务器异常  GET: " + url + "/device/" + promptMessage.client003.dId, function(){})
-					},
-					complete : function(xhr, status) {
-						
-						myComplete(xhr, status);
-					}
-				})
-				e.stopPropagation();
+					})
+					e.stopPropagation();
+				} else {
+					layer.msg("操控功能已上锁，请点击右下角解锁。")
+				}
 			})
+		
 		}
 	}
 
@@ -530,6 +537,32 @@ $(function(){
 			if(debug) window.location.href = "index.html";
 			if(!debug)
 			window.location.href = url + "/index.html";
+		})
+		
+		//监听操控解锁
+		$(".control-lock").on("click", function(){
+			if ( $(this).hasClass("lock") ) {//执行后解锁控制
+				let auth = $.parseJSON(iotSettings).authArea.peidianshi;
+				if ( auth === 1 ) {
+					$(this).removeClass("lock");
+					$(this).addClass("unlock");
+					canControl = true;
+				} else {
+					queryUserSettings();
+					auth = $.parseJSON(iotSettings).authArea.peidianshi;
+					if ( auth === 1 ) {
+						$(this).removeClass("lock");
+						$(this).addClass("unlock");
+						canControl = true;
+					} else {
+						layer.msg("无控制权限，请询问管理员开通！", function(){})
+					}
+				}
+			} else {//执行后控制上锁
+				$(this).addClass("lock");
+				$(this).removeClass("unlock");
+				canControl = false;
+			}
 		})
 	}); 	
 })

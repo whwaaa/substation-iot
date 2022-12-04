@@ -11,14 +11,14 @@
 		<title>用户管理</title>
 	</head>
 	<body>
-		<div class="mark">
+		
+		<div class="mark"></div>
 		
 		<div class="head">
 			
 			<div class="left">
 				<span class="return lnr lnr-exit"></span>
 			</div>
-			
 			<div class="right">
 				<div class="headImg">
 					<span class="lnr lnr-user">
@@ -28,7 +28,6 @@
 				<div class="account">12345678901</div>
 			</div>
 		</div>
-		
 		<div class="con">
 			<div class="con1">
 				<div class="title">密码修改</div>
@@ -44,7 +43,6 @@
 				<div class="but">
 					<button type="button" class="authpre mui-btn mui-btn-danger mui-btn-outlined">上一个</button>
 					<button type="button" class="authnext mui-btn mui-btn-danger mui-btn-outlined">下一个</button>
-					
 					<button type="button" class="authbut mui-btn mui-btn-danger mui-btn-outlined">授权</button>
 					<button type="button" class="unauthbut mui-btn mui-btn-danger mui-btn-outlined">删除</button>
 				</div>
@@ -56,15 +54,29 @@
 				<div class="but">
 					<button type="button" class="resetpre mui-btn mui-btn-danger mui-btn-outlined">上一个</button>
 					<button type="button" class="resetnext mui-btn mui-btn-danger mui-btn-outlined">下一个</button>
-					
 					<button type="button" class="resetbut mui-btn mui-btn-danger mui-btn-outlined">重置</button>
 					<button type="button" class="unresetbut mui-btn mui-btn-danger mui-btn-outlined">撤销</button>
 				</div>
 			</div>
 			
-			
+			<div class="con4">
+				<div class="title">监控授权</div>
+				<input class="input1 query-account" type="text" placeholder="输入授权的账号(手机号)"><button type="button" class="queryAcc-btn mui-btn mui-btn-danger mui-btn-outlined">查询</button>
+				<input class="input2 query-name" type="text" placeholder="查询后带出的昵称(姓名)" readonly>
+				<div class="div-peidianshi">
+					10kV配电室<input type="checkbox" value="0" id="peidianshi-monitor"/><label for="peidianshi-monitor">可监视</label><input type="checkbox" value="1" id="peidianshi-control"/><label for="peidianshi-control">可操控</label>
+				</div>
+				<div class="but">
+					<button type="button" class="monitor-control-auth mui-btn mui-btn-danger mui-btn-outlined">确认授权</button>
+				</div>
+			</div>
+
+			<div class="con5">
+				<button type="button" class="logout mui-btn mui-btn-danger mui-btn-outlined">退出登录</button>
+			</div>
+
 		</div>
-		<div>
+		<div class="foot">
 			<div class="theme">
 				<!-- <span class="theme-title">THEME</span> -->
 				<div class="left"></div>
@@ -72,13 +84,13 @@
 			</div>
 		</div>
 		
-		</div>
+		
 	</body>
 	
 	<script src="js/jquery-3.4.1.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/jquery.cookie.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/layer3.5.1.js" type="text/javascript" charset="utf-8"></script>
-	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<!--<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>-->
 	<script src="js/common.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/userManage.js" type="text/javascript" charset="utf-8"></script>
 	

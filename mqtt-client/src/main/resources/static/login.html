@@ -120,10 +120,10 @@
 			</div>
 		</div>
 	</body>
-	<script src="js/common.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/jquery-3.4.1.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/jquery.cookie.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/layer3.5.1.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/common.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		$(function(){
 			
@@ -203,7 +203,7 @@
 						account:$(".account").eq(2).val().trim(),
 						name:$(".name").eq(0).val().trim()
 					},
-					url: url + "/user",
+					url: url + "/user/register",
 					dataType: "json",
 					xhrFields: {
 						// 允许携带cookie跨域

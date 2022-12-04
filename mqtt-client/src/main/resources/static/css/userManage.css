@@ -1,11 +1,22 @@
 
 html,body{
 	color: #606367;
+	height: 1220px;
 }
-.darkness .con1, .darkness .con2, .darkness .con3, .darkness input {
-    background-color: rgba(36,113,197,0.12);
+body{
+	padding-top: 140px;
+	/* padding-bottom: 140px; */
 }
 .mark{
+	height: 1220px;
+}
+.darkness .con1, .darkness .con2, .darkness .con3,  .darkness .con4, .darkness input, .darkness .con5 {
+    background-color: rgba(36,113,197,0.12);
+}
+.darkness .con4 .div-peidianshi{
+	border-bottom: 2px solid #fbfbfb;
+}
+/* .mark{
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -15,11 +26,11 @@ html,body{
 }
 .darkness .mark{
 	background-color: rgba(26, 26, 26, 0.9);
-}
+} */
 .darkness .headImg{
 	border-color: white;
 }
-.admin .con2, .admin .con3, .admin .adminbox{
+.admin .con2, .admin .con3, .admin .adminbox, .admin .con4{
 	display: block !important;
 }
 
@@ -86,12 +97,14 @@ html,body{
 	
 }
 .headImg .lnr{
-	position: absolute;
+	/* position: absolute; */
+	position: relative;
 	display: inline-block;
-	line-height: 100px;
+	line-height: 58px;
 	font-size: 60px;
 	left: 50%;
 	transform: translateX(-50%);
+	width: 58px;
 }
 .head .adminbox{
 	color: #dd524d;
@@ -104,6 +117,9 @@ html,body{
 	font-size: 15px;
 	line-height: 10px;
 	display: none;
+}
+.head .adminbox .lnr-user{
+	position: relative;
 }
 .head .name{
 	display: inline-block;
@@ -131,6 +147,10 @@ html,body{
 	top: 25px;
 	left: 25px;
 	font-size: 35px;
+}
+
+.con{
+	position: relative;
 }
 .con1{
 	background-color: white;
@@ -276,3 +296,77 @@ html,body{
 
 
 
+.con4{
+	background-color: white;
+	height: auto;
+	width: 90%;
+	margin-top: 15px;
+	margin-left: 5%;
+	border-radius: 6px;
+	display: none;
+}
+.con4 .title{
+	display: inline-block;
+	font-size: 20px;
+	margin-top: 15px;
+	margin-left: 15px;
+	height: 20px;
+	border-left: #606367 4px solid;
+	line-height: 20px;
+	padding-left: 7px;
+	width: 90%;
+}
+
+.con4 .input1 {
+    margin-top: 20px;
+    margin-left: 5%;
+    width: 65%;
+}
+.con4 .queryAcc-btn{
+	margin-top: 24px;
+    width: 20%;
+    margin-left: 12px;
+}
+.con4 .input2{
+	margin-top: 0;
+	margin-left: 5%;
+	width: 90%;
+}
+.con4 .div-peidianshi{
+	border-bottom: 1px #606367 solid;
+	width: 90%;
+	margin-left: 5%;
+	margin-top: 5px;
+}
+.con4 #peidianshi-monitor{
+	display: inline-block;
+	margin-left: 40px;
+}
+.con4 #peidianshi-control{
+	display: inline-block;
+	margin-left: 20px;
+}
+.con4 .monitor-control-auth{
+	margin-top: 20px;
+	margin-left: 5%;
+	width: 90%;
+	margin-bottom: 20px;
+}
+.con4 label{
+	display: inline-block;
+}
+
+.con5{
+	background-color: white;
+	height: auto;
+	width: 90%;
+	margin-top: 15px;
+	margin-left: 5%;
+	border-radius: 6px;
+}
+.con5 button{
+	margin-top: 10px;
+	margin-left: 5%;
+	width: 90%;
+	margin-bottom: 10px;
+}

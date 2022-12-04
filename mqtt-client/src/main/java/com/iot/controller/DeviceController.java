@@ -116,8 +116,4 @@ public class DeviceController {
         return new AjaxResult(500, "设备"+clientId+"不在线!");
     }
 
-    public static void main(String[] args) {
-        Long client = Long.valueOf("client003".replaceAll("client", ""));
-        System.out.println(client);
-    }
 }

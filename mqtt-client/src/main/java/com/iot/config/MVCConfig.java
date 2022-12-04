@@ -14,7 +14,7 @@ public class MVCConfig implements WebMvcConfigurer {
         registry.addInterceptor(interceptor).addPathPatterns("/**");
         LoginInterceptor loginInterceptor = new LoginInterceptor();
         registry.addInterceptor(loginInterceptor).addPathPatterns("/**")
-                .excludePathPatterns("/user/requestreset","/login","/css/**","/fonts/**","/img/**"
+                .excludePathPatterns("/user/register","/user/requestreset","/login","/css/**","/fonts/**","/img/**"
                         ,"/js/**","/Linearicons-Free-v1.0.0/**","/mqtt/**","/*.html");
     }
 }

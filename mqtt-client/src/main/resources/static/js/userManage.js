@@ -7,12 +7,13 @@ if ( iotAccount == "admin" ) {
 	admin = true;
 	$("html").addClass("admin");
 } else {
+	if (!debug){
 	admin = false;
 	$("html").removeClass("admin");
+	}
 }
 
 $(document).ready(function(){ 
-
 	function newPasswdCheck(){
 		if ($(".newPasswd").val().trim().length >= 8 ){
 			return $(".newPasswd").val().trim();
@@ -47,7 +48,7 @@ $(document).ready(function(){
 			success: function (data) {
 				if (data.code == 200) {
 					layer.msg("密码修改成功!")
-					$.cookie('iot-time', 0, { expires: 1, path: '/' });
+					$.cookie('iot-time', 0, { expires: -1, path: '/' });
 					setTimeout(
 						function() {
 							window.location.href = url + "/login.html";
@@ -63,7 +64,6 @@ $(document).ready(function(){
 			}
 		})
 	}
-	
 	
 	var userList;
 	var userListLenth = 0;
@@ -355,7 +355,97 @@ $(document).ready(function(){
 				myComplete(xhr, status);
 			}
 		})
-		
+	}
+	
+	var authAreaClientId = undefined;
+	var authAreaClientSettings = undefined;
+	// 监控授权
+	function authCheckArea(){
+		//监听查询按钮
+		$(".queryAcc-btn").on("click", function(){
+			layer.load(0)
+			$.ajax({
+				type: "GET",
+				url: url + "/user/username/"　+　$(".query-account").val().trim(),
+				dataType: "json",
+				xhrFields: {
+					// 允许携带cookie跨域
+					withCredentials: true
+				},
+				crossDomain: true,
+				success: function (data) {
+					layer.closeAll();
+					if (data.code == 200) {
+						authAreaClientId = data.obj.id;
+						$(".query-name").val(data.obj.name);
+						if ( data.obj.settings != undefined ) {
+							authAreaClientSettings = data.obj.settings;
+							let authArea = $.parseJSON(authAreaClientSettings).authArea;
+							switch( authArea.peidianshi ){
+								case -1:
+									$("#peidianshi-monitor").attr("checked", false);
+									$("#peidianshi-control").attr("checked", false);
+									break;
+								case 0:
+									$("#peidianshi-monitor").attr("checked", true);
+									$("#peidianshi-control").attr("checked", false);
+									break;
+								case 1:
+									$("#peidianshi-monitor").attr("checked", true);
+									$("#peidianshi-control").attr("checked", true);
+									break;
+							}
+							
+						}
+					} else {
+						layer.msg(data.msg);
+					}
+				},
+				error: function(e){
+					layer.msg("服务器异常  GET: " + url + "/user/username/"　+　$(".query-account").val().trim(), function(){})
+				},
+				complete : function(xhr, status) {
+					myComplete(xhr, status);
+				}
+			})
+		})
+		//监听授权按钮  {"theme":"dark","authArea":{"peidianshi":1}}
+		$(".monitor-control-auth").on("click", function(){
+			if ( authAreaClientId !== undefined && authAreaClientSettings !== undefined ) {
+				let settingsJson = $.parseJSON(authAreaClientSettings);
+				let peidianshiNum = -1;
+				if ( $("#peidianshi-monitor").prop("checked") === true ) peidianshiNum = 0;
+				if ( $("#peidianshi-control").prop("checked") === true ) peidianshiNum = 1;
+				settingsJson.authArea.peidianshi = peidianshiNum;
+				authAreaClientSettings = JSON.stringify(settingsJson);
+				layer.load(0)
+				$.ajax({
+					type: "POST",
+					url: url + "/user/"　+　authAreaClientId,
+					dataType: "json",
+					data: { _method:"PUT", settings:authAreaClientSettings },
+					xhrFields: {
+						// 允许携带cookie跨域
+						withCredentials: true
+					},
+					crossDomain: true,
+					success: function (data) {
+						layer.closeAll();
+						if (data.code == 200) {
+							layer.msg(data.msg);
+						} else {
+							layer.msg(data.msg, function(){});
+						}
+					},
+					error: function(e){
+						layer.msg("服务器异常  GET: " + url + "/user/"　+　authAreaClientId, function(){})
+					},
+					complete : function(xhr, status) {
+						myComplete(xhr, status);
+					}
+				})
+			}
+		})
 	}
 	
 	$(".account").text(iotAccount);
@@ -385,11 +475,24 @@ $(document).ready(function(){
 			layer.msg("新密码至少8位",function(){})
 		}
 	})
+
+	//监听退出登录
+	$(".logout").on("click", function(){
+		$.cookie('iot-time', "", { expires: -1, path: '/' });
+		$.cookie('iot-username', "", { expires: -1, path: '/' });
+		$.cookie('iot-name', "", { expires: -1, path: '/' });
+		$.cookie('iot-lastPage', "", { expires: -1, path: '/' });
+		$.cookie('iot-settings', "", { expires: -1, path: '/' });
+		window.location.href = url + "/login.html";
+	})
 	
 	// 管理员
 	if ( admin == true ) {
+		if (!debug){
 		queryNoAuthAccount();
 		queryresetAccount();
+		}
+		authCheckArea();
 	}
 	
 }); 	

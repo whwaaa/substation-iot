@@ -2,6 +2,7 @@ package com.iot.service;
 
 import com.iot.mapper.UserMapper;
 import com.iot.pojo.User;
+import com.iot.vo.UserPasswordMap;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +27,27 @@ public class UserService {
     public User queryById(Long id ) {
         return userMapper.selectByPrimaryKey(id);
     }
+
+    /**
+     * 根据账号查询
+     * @param account :
+     * @return :
+     */
+    @Transactional(propagation = Propagation.REQUIRED,readOnly = true)
+    public User queryByAccount(String account) {
+        Example example = new Example(User.class);
+        example.createCriteria().andEqualTo("account", account);
+        List<User> users = userMapper.selectByExample(example);
+        if ( users.size() == 1 ) {
+            User user = users.get(0);
+            user.setPasswd(null);
+            return user;
+        }
+        return null;
+    }
+
+
+
 
     /**
      * 查询账号和密码
@@ -94,6 +116,11 @@ public class UserService {
     public Integer updateById(Long id, User user) {
         user.setId(id);
         user.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+        if ( user.getSettings()!=null && !"".equals(user.getSettings()) ) {
+            String username = userMapper.selectByPrimaryKey(id).getAccount();
+            UserPasswordMap.userPasswdMap.get(username).put("settings",user.getSettings());
+//            UserPasswordMap.userPasswdMap.get(username).put("update","true");
+        }
         return userMapper.updateByPrimaryKeySelective(user);
     }
 

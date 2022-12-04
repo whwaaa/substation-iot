@@ -1,5 +1,7 @@
 package com.iot.interceptor;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.iot.vo.UserPasswordMap;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -7,9 +9,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 public class LoginInterceptor  implements HandlerInterceptor {
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //HttpSession session = request.getSession();
@@ -17,7 +19,6 @@ public class LoginInterceptor  implements HandlerInterceptor {
         String username = null;
         String time = null;
         String name = null;
-        String settings = null;
         Cookie[] cookies = request.getCookies();
         if ( cookies != null ) {
             for (Cookie cookie : cookies) {
@@ -25,11 +26,47 @@ public class LoginInterceptor  implements HandlerInterceptor {
                 if ("iot-username".equals(cookieName)) username = cookie.getValue();
                 if ("iot-time".equals(cookieName)) time = cookie.getValue();
                 if ("iot-name".equals(cookieName)) name = cookie.getValue();
-                if ("iot-settings".equals(cookieName)) name = cookie.getValue();
             }
         }
         if (UserPasswordMap.userPasswdMap.get(username) != null
-        && UserPasswordMap.userPasswdMap.get(username).equals(time)) {
+        && UserPasswordMap.userPasswdMap.get(username).get("time").equals(time)) {
+
+//            //信息更新
+//            if ( UserPasswordMap.userPasswdMap.get(username).get("update").equals("true") ) {
+//                response.setHeader("REDIRECT", "REDIRECT");
+//                response.setHeader("TOKEN_MSG", "relogin");//无权控制配电室设备
+//                response.setStatus(HttpServletResponse.SC_FORBIDDEN); // 添加403状态码 (服务器拒绝)
+//                return false;
+//            }
+
+            //权限校验
+            String settings = UserPasswordMap.userPasswdMap.get(username).get("settings");
+            JSONObject jsonObject = JSONObject.parseObject(settings);
+            JSONObject authArea = jsonObject.getJSONObject("authArea");
+            Integer peidianshi = authArea.getInteger("peidianshi");
+            String requestURI = request.getRequestURI();
+            if ( peidianshi == -1 ) {
+                if ( "/device/state/client001".equals(requestURI)
+                        || "/device/state/client002".equals(requestURI)
+                        || "/device/state/client003".equals(requestURI) ) {
+                    response.setHeader("REDIRECT", "REDIRECT");
+                    response.setHeader("TOKEN_MSG", "noauth-monitor");//无权监视配电室设备
+                    response.setStatus(HttpServletResponse.SC_FORBIDDEN); // 添加403状态码 (服务器拒绝)
+                    return false;
+                }
+            } else if ( peidianshi == 0 ) {
+                if ( "/device/1".equals(requestURI)
+                        || "/device/2".equals(requestURI)
+                        || "/device/3".equals(requestURI) ) {
+                    response.setHeader("REDIRECT", "REDIRECT");
+                    response.setHeader("TOKEN_MSG", "noauth-control");//无权控制配电室设备
+                    response.setStatus(HttpServletResponse.SC_FORBIDDEN); // 添加403状态码 (服务器拒绝)
+                    return false;
+                }
+            }
+
+//            switch ()
+
 //            Cookie cookieUsername = new Cookie("iot-username", username);
 //            cookieUsername.setPath("/");
 //            cookieUsername.setMaxAge(60*60*24*365);

@@ -4,7 +4,7 @@ html,body{
 	margin: 0;
 	padding: 0;
 	background-color: bisque;
-	background-color: #F7F7F7;
+	background-color: 	#F7F7F7;
 	overflow-x: hidden;
 }
 
@@ -110,7 +110,7 @@ html,body{
 	right: 15px;
 	top: 20px;
 }
-.title{
+.head .title{
 	position: absolute;
 	height: 3.4375rem;
 	left: 50%;

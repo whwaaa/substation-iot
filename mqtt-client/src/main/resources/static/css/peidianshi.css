@@ -8,6 +8,9 @@
 	background-color: rgba(36,113,197,0.12);
 	color: white;
 }
+.darkness .control-lock div{
+	color: white;
+}
 
 .right .prompt{
 	border-color: #000000;
@@ -407,3 +410,35 @@ body{
 	background-color: #f0ad4e;
 }
 
+.control-lock{
+	position: absolute;
+	text-align: right;
+	line-height: 40px;
+	top: 15px;
+	right: 25px;
+	height: 40px;
+	width: 120px;
+}
+.control-lock div{
+	display: none;
+	color: #606367;
+}
+.control-lock span{
+	margin-left: 7px;
+	font-size: 25px;
+	position: relative;
+	top: 3px;
+	font-weight: 600;
+}
+.control-lock div.lock span{
+	color: #EFAD4D;
+}
+.control-lock div.unlock span{
+	color: #5BB85A;
+}
+.control-lock.lock .lock{
+	display: block;
+}
+.control-lock.unlock .unlock{
+	display: block;
+}

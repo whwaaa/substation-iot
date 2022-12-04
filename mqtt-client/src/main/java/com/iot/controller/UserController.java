@@ -49,9 +49,21 @@ public class UserController {
         return new AjaxResult(500, "服务器内部异常, 请稍后再试!");
     }
 
+
+    // 根据用户名查询账号信息
+    @GetMapping(path = "/username/{username}")
+    public AjaxResult queryByAccount(@PathVariable(value = "username") String account){
+        User user = service.queryByAccount(account);
+        if(user != null){
+            return new AjaxResult(200,"ok", user);
+        }
+        return new AjaxResult(500, "账号不存在，请检查是否填写正确。");
+    }
+
     // 添加一条数据
-    @PostMapping
+    @PostMapping(path = "/register")
     public AjaxResult add(User user){
+        user.setSettings("{\"theme\":\"dark\",\"authArea\":{\"peidianshi\":0}}");
         Integer add = service.add(user);
         if( add!=null && add>0){
             return new AjaxResult(201, "ok");
@@ -158,5 +170,7 @@ public class UserController {
         }
         return new AjaxResult(401, "旧密码错误，修改失败。");
     }
+
+
 }
 

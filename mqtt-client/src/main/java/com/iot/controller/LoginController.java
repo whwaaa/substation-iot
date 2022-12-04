@@ -15,7 +15,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/login")
@@ -35,7 +37,11 @@ public class LoginController {
             if ( users.size() == 1 && users.get(0).getIsDelete() == 0 ) {// 账号已授权
                 // username : 当前时间戳
                 String time = String.valueOf(System.currentTimeMillis());
-                UserPasswordMap.userPasswdMap.put(username, time);
+                Map<String, String> map = new HashMap<>();
+                map.put("time", time);
+                map.put("settings", users.get(0).getSettings());
+//                map.put("update", "false");
+                UserPasswordMap.userPasswdMap.put(username, map);
                 return new AjaxResult(200, "ok", new LoginSuccess(username, time, users.get(0)));
             }
         }
