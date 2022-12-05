@@ -50,6 +50,21 @@ public class OperatService {
     }
 
     /**
+     * 根据主键更新
+     * @param id :需要更新数据的主键id
+     * @param operat :更新的封装对象
+     * @return :
+     */
+    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = {Exception.class})
+    public Integer peidianshiOperate(Long id, Operat operat) {
+        operat.setId(id);
+        operat.setTime(new Timestamp(System.currentTimeMillis()));
+        return operatMapper.updateByPrimaryKeySelective(operat);
+    }
+
+
+
+    /**
      * 根据主键删除一条数据
      * @param id :需要删除的数据主键id
      * @return :

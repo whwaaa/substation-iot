@@ -123,3 +123,7 @@ html,body{
 .hidden {
 	display: none !important;
 }
+
+.mui-switch.mui-disabled {
+	opacity: 0.6;
+}

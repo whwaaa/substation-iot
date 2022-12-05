@@ -4,12 +4,12 @@ $(function(){
 	var canControl = false;
 
 	var promptMessage = {
-		"client001":{"class":"door","dId":"1","serial":"0","on":"大门已合好","off":"大门未合好","oning":"大门打开中...","offing":"大门关闭中..."},
-		"client002":{"class":"mouse-board","dId":"2","serial":"1","on":"防鼠挡板已合好","off":"防鼠挡板未合好","oning":"防鼠挡板打开中...","offing":"防鼠挡板关闭中..."},
-		"client003":{"class":"device-light","dId":"3","serial":"2","on":"人体感应已开启","off":"人体感应关闭","oning":"人体感应开启中...","offing":"人体感应关闭中..."}
+		"client001":{"topic":"iot-client001","class":"door","dId":"1","serial":"0","on":"大门已合好","off":"大门未合好","oning":"大门打开中...","offing":"大门关闭中..."},
+		"client002":{"topic":"iot-client002","class":"mouse-board","dId":"2","serial":"1","on":"防鼠挡板已合好","off":"防鼠挡板未合好","oning":"防鼠挡板打开中...","offing":"防鼠挡板关闭中..."},
+		"client003":{"topic":"iot-client003","class":"device-light","dId":"3","serial":"2","on":"人体感应已开启","off":"人体感应关闭","oning":"人体感应开启中...","offing":"人体感应关闭中..."}
 	}
-	
-	
+
+
 	var receiveAssistLightSetting = {};
 	var sendAssistLightSetting = {};
 	//辅助照明灯操作模式调节
@@ -230,7 +230,7 @@ $(function(){
 					sendAssistLightSetting["endTimeHour"] = parseInt(($(".hour2").scrollTop()/30).toFixed());
 					sendAssistLightSetting["endTimeMin"] = parseInt(($(".min2").scrollTop()/6).toFixed());
 					sendAssistLightSetting["lightValue"] = parseInt($(".light_value_ipt").val());
-					
+
 					layer.load(0)
 					$.ajax({
 						type: "POST",
@@ -247,6 +247,7 @@ $(function(){
 							if(data.code == 200){
 								layer.msg("保存成功");
 								receiveAssistLightSetting = sendAssistLightSetting;
+								sw3Control();
 								bootModeUpdateLock = false;							
 							}
 						},
@@ -318,7 +319,6 @@ $(function(){
 								layer.msg(data.msg,function(){})
 							}
 							client001StateQueryOk = true;
-							bootModeFirstQueryFlag = true;
 						},
 						error: function(e){
 							layer.msg("服务器异常  GET: " + url + "/devicemsg/latest/" + promptMessage.client001.dId, function(){})
@@ -450,20 +450,19 @@ $(function(){
 						success: function (data) {
 							 // '1:开启 2:关闭'
 							if (data.code == 200 && data.msg=="ok"){
+								//设置界面参数更新
+								updateLigthSetting();
 								if ( data.obj.state == 1 ) {
 									$(".con").eq(promptMessage.client003.serial).find(".right").removeClass("hidden");
 									$(".mui-switch").eq(promptMessage.client003.serial).addClass("mui-active");
 									$(".prompt").eq(promptMessage.client003.serial).text(promptMessage.client003.on);
 									$(".con").eq(promptMessage.client003.serial).parent().addClass("open");
-									//设置界面参数更新
-									updateLigthSetting();
 								} else if ( data.obj.state == 2 ){
 									$(".con").eq(promptMessage.client003.serial).find(".right").removeClass("hidden");
 									$(".mui-switch").eq(promptMessage.client003.serial).removeClass("mui-active");
 									$(".prompt").eq(promptMessage.client003.serial).text(promptMessage.client003.off);
 									$(".con").eq(promptMessage.client003.serial).parent().removeClass("open");
-									//设备断开连接
-									deviceConnectionException();
+
 								} else {
 									layer.msg("状态未知,服务器异常,请联系管理员.",function(){})
 								}
@@ -480,11 +479,13 @@ $(function(){
 							myComplete(xhr, status);
 						}
 					})
-				} else {
+				} else {//设备断开连接
 					$(".con").eq(promptMessage.client003.serial).find(".right").addClass("hidden");
 					$(".state").eq(promptMessage.client003.serial).removeClass("state1 state2");
 					$(".state").eq(promptMessage.client003.serial).addClass("state3");
 					client003StateQueryOk = true;
+					//设备断开连接界面处理
+					deviceConnectionException();
 				}
 			},
 			error: function(e){
@@ -495,12 +496,61 @@ $(function(){
 			}
 		})
 	}
+
+	function sw3Control(){
+		if ( canControl && receiveAssistLightSetting["bootMode"] === 3 ) {
+			$("#sw3").removeClass("mui-disabled");
+		} else {
+			$("#sw3").addClass("mui-disabled");
+		}
+	}
+	function sw3Operate(){
+		layer.load(0);
+		$.ajax({
+			type: "POST",
+			url: url + "/operat/peidianshi",
+			dataType: "json",
+			async: false,
+			data: {_method:"PUT",dId:promptMessage.client003.dId,topic:promptMessage.client003.topic},
+			xhrFields: {
+				// 允许携带cookie跨域
+				withCredentials: true
+			},
+			crossDomain: true,
+			success: function (data) {
+				layer.closeAll();
+				if ( data.code === 201 ) {//
+					if ( data.obj.state === 1 ) {
+						$(".mui-switch").eq(promptMessage.client003.serial).addClass("mui-active");
+						$(".prompt").eq(promptMessage.client003.serial).text(promptMessage.client003.on);
+						$(".con").eq(promptMessage.client003.serial).parent().addClass("open");
+					} else if ( data.obj.state === 2 ){
+						$(".mui-switch").eq(promptMessage.client003.serial).removeClass("mui-active");
+						$(".prompt").eq(promptMessage.client003.serial).text(promptMessage.client003.off);
+						$(".con").eq(promptMessage.client003.serial).parent().removeClass("open");
+					} else {
+						layer.msg("状态未知,服务器异常,请联系管理员.",function(){})
+					}
+				}
+			},
+			timeout: 8000,//设置超时时间为8s
+			error: function(e){
+				layer.closeAll();
+				layer.msg("辅助照明开关请求超时！")
+			},
+			complete : function(xhr, status) {
+				myComplete(xhr, status);
+			}
+		})
+	}
+
 	
-	$(document).ready(function(){ 
+	$(document).ready(function(){
 
 		//查询在线状态
 		if (!debug){
-			
+
+		//定时获取状态信息
 		var queryStateTime = setInterval( function(){
 			if ( client001StateQueryOk ) queryClient001State();
 			if ( client002StateQueryOk ) queryClient002State();
@@ -508,7 +558,7 @@ $(function(){
 		}, 1000 );
 		
 		}
-		
+		//感应灯操作监听
 		assistFloodLightOpreate();
 		
 		//Debug
@@ -530,8 +580,8 @@ $(function(){
 		
 		
 		
-		// lightTim();
-		
+
+		//监听返回
 		$(".lnr-exit").on("click", function(){
 			$.cookie('iot-lastPage', "", { expires: -1, path: '/' });
 			if(debug) window.location.href = "index.html";
@@ -547,6 +597,7 @@ $(function(){
 					$(this).removeClass("lock");
 					$(this).addClass("unlock");
 					canControl = true;
+					sw3Control();
 				} else {
 					queryUserSettings();
 					auth = $.parseJSON(iotSettings).authArea.peidianshi;
@@ -554,6 +605,7 @@ $(function(){
 						$(this).removeClass("lock");
 						$(this).addClass("unlock");
 						canControl = true;
+						sw3Control();
 					} else {
 						layer.msg("无控制权限，请询问管理员开通！", function(){})
 					}
@@ -562,7 +614,15 @@ $(function(){
 				$(this).addClass("lock");
 				$(this).removeClass("unlock");
 				canControl = false;
+				sw3Control();
 			}
 		})
-	}); 	
+
+		//监听辅助照明灯控制按钮
+		$("#sw3").on("click", function (){
+			if ( !$("#sw3").hasClass("mui-disabled") ) {
+				sw3Operate();
+			}
+		})
+	});
 })
